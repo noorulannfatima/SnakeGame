@@ -13,6 +13,15 @@ using namespace std;
 
     double LastUpdateTime= 0 ;  // keep track of time at which last update of snake occured
 
+    bool ElementInDeque(Vector2 element, deque<Vector2> deque){
+        for (unsigned int i=0; i< deque.size(); i++){
+            if(Vector2Equals(deque[i], element)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     bool eventTriggered(double interval){
         double currentTime= GetTime();
         if(currentTime - LastUpdateTime >= interval){
@@ -48,11 +57,11 @@ using namespace std;
         Vector2 position;
         Texture2D texture;
 
-        Food(){  //constructor
+        Food(deque<Vector2> snakebody){  //constructor
             Image image = LoadImage("graphics/1.png");
             texture = LoadTextureFromImage(image);
             UnloadImage(image);
-            position = GenerateRandomPos();
+            position = GenerateRandomPos(snakebody);
         }
         // Destructor
         ~Food(){
@@ -62,20 +71,27 @@ using namespace std;
         void Draw(){
             DrawTexture(texture, position.x*cellSize, position.y*cellSize, green);
         }
-        //Generating food at random positions
-        Vector2 GenerateRandomPos(){
+        Vector2 GenerateRandomCell(){
             float x = GetRandomValue(0, cellCount - 1);
             float y = GetRandomValue(0, cellCount - 1);
             return Vector2{x, y};
+
         }
+        //Generating food at random positions
+        Vector2 GenerateRandomPos(deque <Vector2> snakebody){
+            Vector2 position = GenerateRandomCell();
 
-
+            while (ElementInDeque(position, snakebody)){  // prevents food on snake body
+                position = GenerateRandomCell();
+            }
+            return position;
+        }
     };
 
     class Game{
         public:
         Snake snake = Snake();
-        Food food = Food();
+        Food food = Food(snake.body);
 
         void Draw(){
             snake.Draw();
@@ -83,6 +99,13 @@ using namespace std;
         }
         void Update(){
             snake.Update();
+            CheckCollisionWithFood();
+        }
+        void CheckCollisionWithFood(){
+            if(Vector2Equals(snake.body[0], food.position)){
+                food.position = food.GenerateRandomPos(snake.body);
+            }
+            
         }
 
     };
