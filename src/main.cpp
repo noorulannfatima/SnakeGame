@@ -69,7 +69,7 @@ using namespace std;
         Texture2D texture;
 
         Food(deque<Vector2> snakebody){  //constructor
-            Image image = LoadImage("graphics/1.png");
+            Image image = LoadImage("graphics/food.png");
             texture = LoadTextureFromImage(image);
             UnloadImage(image);
             position = GenerateRandomPos(snakebody);
