@@ -35,6 +35,7 @@ using namespace std;
         public:
         deque<Vector2> body = {Vector2{6, 9}, Vector2{5, 9}, Vector2{4, 9}};
         Vector2 direction = {1, 0};
+        bool addSegment = false;
 
         void Draw(){
             for(unsigned int  i=0; i<body.size(); i++){
@@ -45,9 +46,13 @@ using namespace std;
 
             }
         }
-        void Update(){  // moving snake
+        void Update(){  // moving snake & adding body part
+        body.push_front(Vector2Add(body[0], direction));
+        if(addSegment == true){
+            addSegment = false;
+        }else{
             body.pop_back();
-            body.push_front(Vector2Add(body[0], direction));
+            }    
         }
 
     };
@@ -104,6 +109,7 @@ using namespace std;
         void CheckCollisionWithFood(){
             if(Vector2Equals(snake.body[0], food.position)){
                 food.position = food.GenerateRandomPos(snake.body);
+                snake.addSegment = true;
             }
             
         }
