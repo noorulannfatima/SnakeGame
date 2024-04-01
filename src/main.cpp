@@ -8,10 +8,9 @@ using namespace std;
     Color green= {173, 204, 96, 255};
     Color darkGreen= {43, 51, 24, 255};
 
-    int cellSize = 21;
+    int cellSize = 22;
     int cellCount = 25;
     int offset = 40; // width of border
-
 
     double LastUpdateTime= 0 ;  // keep track of time at which last update of snake occured
 
@@ -105,6 +104,20 @@ using namespace std;
         Food food = Food(snake.body);
         bool running = true;
         int score = 0;
+        Sound eatSound;
+        Sound wallSound;
+
+        Game(){
+            InitAudioDevice();
+            eatSound = LoadSound("Sounds/eat.mp3");
+            wallSound = LoadSound("Sounds/wall.mp3");
+        }
+
+        ~Game(){
+            UnloadSound(eatSound);
+            UnloadSound(wallSound);
+            CloseAudioDevice(); 
+        }
 
         void Draw(){
             snake.Draw();
@@ -124,6 +137,7 @@ using namespace std;
                 food.position = food.GenerateRandomPos(snake.body);
                 snake.addSegment = true;
                 score ++;
+                PlaySound(eatSound);
             }
             
         }
@@ -140,6 +154,7 @@ using namespace std;
             food.position = food.GenerateRandomPos(snake.body);
             running = false;
             score = 0;
+            PlaySound(wallSound);
         }
         void CheckCollisionWithTail(){
             deque<Vector2> headlessbody = snake.body;
