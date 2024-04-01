@@ -5,11 +5,13 @@
 
 using namespace std;
 
-    Color green= {245, 245, 245, 255};
-    Color darkGreen= {80, 0, 0, 255};
+    Color green= {173, 204, 96, 255};
+    Color darkGreen= {43, 51, 24, 255};
 
-    int cellSize = 20;
-    int cellCount = 30;
+    int cellSize = 21;
+    int cellCount = 25;
+    int offset = 40; // width of border
+
 
     double LastUpdateTime= 0 ;  // keep track of time at which last update of snake occured
 
@@ -41,7 +43,7 @@ using namespace std;
             for(unsigned int  i=0; i<body.size(); i++){
                 float x = body[i].x;
                 float y = body[i].y;
-                Rectangle segement = Rectangle{x*cellSize, y*cellSize, (float)cellSize, (float)cellSize};
+                Rectangle segement = Rectangle{offset + x*cellSize, offset + y*cellSize, (float)cellSize, (float)cellSize};
                 DrawRectangleRounded(segement, 0.5, 6, darkGreen);
 
             }
@@ -78,7 +80,7 @@ using namespace std;
         }
 
         void Draw(){
-            DrawTexture(texture, position.x*cellSize, position.y*cellSize, green);
+            DrawTexture(texture, offset + position.x*cellSize, offset + position.y*cellSize, green);
         }
         Vector2 GenerateRandomCell(){
             float x = GetRandomValue(0, cellCount - 1);
@@ -147,7 +149,7 @@ using namespace std;
     };
 int main(){
 
-    InitWindow(cellSize*cellCount, cellSize*cellCount, "Retro Snake");
+    InitWindow(2*offset + cellSize * cellCount, 2*offset + cellSize * cellCount, "Retro Snake");
     SetTargetFPS(60);  // defining frame rate means this game will run at same rate on every computer
 
     Game game = Game();
@@ -182,6 +184,8 @@ int main(){
         // dawing
         ClearBackground(green);
         game.Draw();  // calling draw method of game object
+        DrawRectangleLinesEx(Rectangle{(float)offset-5, (float)offset-5, (float)cellSize*cellCount+10, (float)cellSize*cellCount+10}, 5, darkGreen);
+        DrawText("Forest Snake", offset -5, 10, 20, darkGreen);
 
         EndDrawing();
     }
