@@ -11,6 +11,8 @@ using namespace std;
     int cellSize = 22;
     int cellCount = 25;
     int offset = 40; // width of border
+    static bool allowMove = false;
+
 
     double LastUpdateTime= 0 ;  // keep track of time at which last update of snake occured
 
@@ -179,23 +181,28 @@ int main(){
 
         if(eventTriggered(0.2))
         {
+            allowMove = true; 
             game.Update();
         }
         if(IsKeyPressed(KEY_UP) && game.snake.direction.y != 1){
             game.snake.direction= {0, -1};
             game.running = true;
+            allowMove = false;
         }
         if(IsKeyPressed(KEY_DOWN) && game.snake.direction.y != -1){
             game.snake.direction= {0, 1};
             game.running = true;
+            allowMove = false;
         }
         if(IsKeyPressed(KEY_LEFT)  && game.snake.direction.x != 1){
             game.snake.direction= {-1, 0};
             game.running = true;
+            allowMove = false;
         }
         if(IsKeyPressed(KEY_RIGHT) && game.snake.direction.x != -1){
             game.snake.direction= {1, 0};
             game.running = true;
+            allowMove = false;
         }
         
 
