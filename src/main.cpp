@@ -182,7 +182,7 @@ using namespace std;
     };
 int main(){
 
-    InitWindow(2*offset + cellSize * cellCount, 2*offset + cellSize * cellCount, "Forest Snake");
+    InitWindow(2*offset + cellSize * cellCount, 2*offset + cellSize * cellCount, "Retro Snake");
     SetTargetFPS(60);  // defining frame rate means this game will run at same rate on every computer
     Game game = Game();  // Create game object
 
@@ -218,8 +218,9 @@ int main(){
         
         // drawing
         ClearBackground(green);
-        DrawRectangleLinesEx(Rectangle{(float)offset-5, (float)offset-5, (float)cellSize*cellCount+10, (float)cellSize*cellCount+10}, 5, darkGreen);
-        DrawText("Forest Snake", offset -5, 10, 20, darkGreen);
+        DrawRectangleLinesEx(Rectangle{(float)offset-5, (float)offset-5, (float)cellSize*cellCount+10, 
+        (float)cellSize*cellCount+10}, 5, darkGreen);
+        DrawText("Retro Snake", offset -5, 10, 20, darkGreen);
         DrawText("Score : ", offset -5, offset+cellSize*cellCount+10, 20, darkGreen);
         DrawText(TextFormat("%i", game.score), offset +80, offset+cellSize*cellCount+10, 20, darkGreen);
 
